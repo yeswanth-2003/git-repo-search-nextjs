@@ -17,18 +17,45 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20 # use Node 20 for better Next.js compatibility
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build Next.js app
-        run: npm run build
+      - name: Debug environment variables
+        run: |
+          echo "MONGODB_URI is set? ${{ secrets.MONGODB_URI != '' }}"
+          echo "GH_CLIENT_ID is set? ${{ secrets.GH_CLIENT_ID != '' }}"
+          echo "GH_CLIENT_SECRET length: ${#GH_CLIENT_SECRET}"
+          echo "JWT_SECRET length: ${#JWT_SECRET}"
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
-          GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
+          GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
+          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+      - name: Build Next.js app
+        run: npm run build -- --debug
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
+          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+      - name: Run lint (optional)
+        run: npm run lint --if-present
 
       - name: Run tests (if any)
         run: npm test --if-present
