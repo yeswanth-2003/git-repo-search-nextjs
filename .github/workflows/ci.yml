@@ -33,13 +33,13 @@ jobs:
       - name: Debug environment variables
         run: |
           echo "MONGODB_URI is set? ${{ secrets.MONGODB_URI != '' }}"
-          echo "GITHUB_CLIENT_ID is set? ${{ secrets.GITHUB_CLIENT_ID != '' }}"
-          echo "GITHUB_CLIENT_SECRET length: ${#GITHUB_CLIENT_SECRET}"
+          echo "GH_CLIENT_ID is set? ${{ secrets.GH_CLIENT_ID != '' }}"
+          echo "GH_CLIENT_SECRET length: ${#GH_CLIENT_SECRET}"
           echo "JWT_SECRET length: ${#JWT_SECRET}"
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
-          GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
+          GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
+          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
@@ -48,8 +48,8 @@ jobs:
         run: npm run build -- --debug
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
-          GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
+          GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
+          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
