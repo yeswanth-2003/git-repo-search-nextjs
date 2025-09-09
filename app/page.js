@@ -123,7 +123,7 @@ useEffect(() => {
       {/* Results */}
       <div className="grid gap-6 w-full max-w-5xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {loading && (
-          <div className="flex flex-col justify-center items-center h-64 space-y-4">
+          <div className="flex flex-col justify-center items-center h-screen w-screen space-y-4">
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             <p className="text-gray-300 text-xl font-semibold">Loading...</p>
           </div>
